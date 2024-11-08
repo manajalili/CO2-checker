@@ -3,30 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class CountryController extends Controller
 {
-    public function getResponseFromApi($zone) {
+    public function getResponseFromApi(Request $request) {
     
-        $apiToken = env('CO2_API_TOKEN');
+        $apiToken = env('API_KEY_TOKEN');
 
-        if (!$zone || !$apiToken) {
-            return "there are missing information";
-        }
+        $zone = $request->input('zone');
 
-        $url = "https://api.example.com/co2-emissions?zone={$zone}&token={$apiToken}";
+        $url = "https://api.electricitymap.org/v3/carbon-intensity/latest?zone={$zone}";
 
-        $response = Http::get($url);
+        $response = Http::withHeaders([
+            'auth-token' => $apiToken,
+        ])->get($url);
 
         if ($response->successful()) {
             $carbonIntensity = $response->json()['carbonIntensity'];
 
-            $color = getColorByCarbonIntensity($carbonIntensity);
-        
+            $color = $this->getColorByCarbonIntensity($carbonIntensity);
+
             return view('measure', compact('zone', 'carbonIntensity', 'color'));
-            
         } else {
-            return 'Failed to fetch data from the API';
+            return 'Failed to fetch data from the API. Please check your given zone or api token';
         }
     }
 

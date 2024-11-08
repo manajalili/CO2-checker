@@ -1,19 +1,20 @@
-@extends('welcome')
-
-@section('content')
-<h2>Carbon Intensity Report</h2>
-
-@if(isset($carbonIntensity))
-        <p style="
-            color: 
-                @if($color === 'RED') #FF0000;
-                @elseif($color === 'GREEN') #008000;
-                @elseif($color === 'YELLOW') #FFA500;
-                @endif
-            font-weight: bold;">
-            Carbon Intensity: {{ $carbonIntensity }} gCO2eq/kWh
-        </p>
-    @else
-        <p>{{ $error ?? 'No data available' }}</p>
-    @endif
-@endsection
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Measure Page</title>
+</head>
+<body>
+    <form action="/" method="GET">
+        <label for="zone">Enter Zone:</label>
+        <input type="text" id="zone" name="zone" placeholder="Enter zone (e.g., DE)" required>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <h1>CO2 Intensity Info</h1>
+    
+    <p>Zone: {{ $zone }}</p>
+    <p>Carbon Intensity: {{ $carbonIntensity }}</p>
+    <p>Color: {{ $color }}</p>
+</body>
+</html>
