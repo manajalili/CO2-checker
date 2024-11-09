@@ -6,6 +6,8 @@ Requirements: PHP >= 8.0, Composer, Laravel >= 8.x, API Key (set in .env as API_
 
 ### Installation
 ```
+git clone git@github.com:manajalili/CO2-checker.git
+cd CO2-checker
 composer install
 ```
 
