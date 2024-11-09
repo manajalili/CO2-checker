@@ -5,28 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class CountryController extends Controller
+class IntensityController extends Controller
 {
-    public function getResponseFromApi(Request $request) {
-    
+    public function getResponseFromApi(Request $request)
+    {
         $apiToken = env('API_KEY_TOKEN');
+
+        if (!$apiToken) {
+            return response()->json(['error' => 'API token is missing'], 500);
+        }
 
         $zone = $request->input('zone');
 
         $url = "https://api.electricitymap.org/v3/carbon-intensity/latest?zone={$zone}";
 
-        $response = Http::withHeaders([
-            'auth-token' => $apiToken,
-        ])->get($url);
+        try {
+            $response = Http::get($url);
 
-        if ($response->successful()) {
             $carbonIntensity = $response->json()['carbonIntensity'];
 
             $color = $this->getColorByCarbonIntensity($carbonIntensity);
 
-            return view('measure', compact('zone', 'carbonIntensity', 'color'));
-        } else {
-            return 'Failed to fetch data from the API. Please check your given zone or api token';
+            return view('intensity/index', compact('zone', 'carbonIntensity', 'color'));
+
+        } catch (\Exception $e) {
+            \Log::error('Error fetching carbon intensity data: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Error fetching data: Please check the zone and/or your token.');
         }
     }
 
@@ -36,9 +41,8 @@ class CountryController extends Controller
             return "RED";
         } elseif ($carbonIntensity < 200) {
             return "GREEN";
-        } else {
-            return "YELLOW";
         }
+        return "YELLOW";
     }
-    
+
 }

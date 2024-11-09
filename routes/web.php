@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CountryController;
+use App\Http\Controllers\IntensityController;
 
-Route::get('/', [CountryController::class, 'getResponseFromApi']);
+Route::get('/', [IntensityController::class, 'getResponseFromApi']);
