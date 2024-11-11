@@ -19,9 +19,15 @@
     <h1>CO2 Intensity Info</h1>
     
     @if(isset($zone) && isset($carbonIntensity) && isset($color))
-        <p>Zone: {{ $zone }}</p>
+        <p >Zone: {{ $zone }}</p>
         <p>Carbon Intensity: {{ $carbonIntensity }}</p>
-        <p>Color: {{ $color }}</p>
+        <p style="
+            color: 
+                @if($color === 'RED') #FF0000;
+                @elseif($color === 'GREEN') #008000;
+                @elseif($color === 'YELLOW') #FFA500;
+                @endif
+            font-weight: bold;">{{ $color }}</p>
     @endif
 </body>
 </html>

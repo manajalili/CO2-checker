@@ -20,7 +20,9 @@ class IntensityController extends Controller
         $url = "https://api.electricitymap.org/v3/carbon-intensity/latest?zone={$zone}";
 
         try {
-            $response = Http::get($url);
+            $response = Http::withHeaders([
+                'auth-token' => $apiToken,
+            ])->get($url);
 
             $carbonIntensity = $response->json()['carbonIntensity'];
 

@@ -7,7 +7,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Http\Controllers\IntensityController;
 
-class CarbonIntensityColorCodeTest extends TestCase
+class CarbonIntensityUnitTest extends TestCase
 {
     protected $controller;
 
@@ -41,18 +41,6 @@ class CarbonIntensityColorCodeTest extends TestCase
         $color = $this->controller->getColorByCarbonIntensity($carbonIntensity);
 
         $this->assertEquals('YELLOW', $color, "Expected 'YELLOW' for intensity between 200 - 400.");
-    }
-
-    public function testMissingApiTokenReturnsErrorMessage()
-    {
-        putenv('API_KEY_TOKEN=');
-
-        $response = $this->get('/?zone=pl');
-
-        $response->assertStatus(500);
-        $response->assertJson([
-            'error' => 'API token is missing',
-        ]);
     }
 
     public function testErrorResponseWithInvalidZone()

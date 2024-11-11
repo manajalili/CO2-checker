@@ -8,9 +8,9 @@ use App\Http\Controllers\IntensityController;
 
 class IntensityControllerFeatureTest extends TestCase
 {
-    public function testGeneralFunctionsIntensityControllerFeature()
+    public function testGeneralFunctionsIntensityController()
     {
-        $zone = 'pl';
+        $zone = 'de';
 
         $response = $this->get("/?zone={$zone}");
 
